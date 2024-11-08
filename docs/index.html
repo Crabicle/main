@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="index.html?v=1.0.1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        console.log("Script is running");
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const body = document.body;
+            const userAgent = navigator.userAgent;
+            console.log(userAgent);
+
+            if (userAgent.includes("Chrome")) {
+                body.classList.add("chrome");
+                console.log("The browser is chrome");
+            } else if (userAgent.includes("Safari") && !(userAgent.includes("Chrome"))) {
+                body.classList.add("safari");
+                console.log("The browser is safari");
+            } else if (userAgent.includes("Firefox")) {
+                body.classList.add("firefox");
+                console.log("The browser is firefox");
+            } else {
+                body.classList.add("unsupported");
+                console.log("The browser is unsupported");
+            }
+
+            const channelId = "UCO-lDv9aoUcb_bGv8ctoXYQ";
+            const apiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
+
+            // Fetch channel statistics (subscriber count, view count)
+            fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const subscriberCount = data.items[0].statistics.subscriberCount;
+                    const viewCount = data.items[0].statistics.viewCount;
+                    document.getElementById('subscriber-count').innerText = (subscriberCount / 1000).toFixed(2) + "k Subs";
+                    document.getElementById('view-count').innerText = viewCount + " views";
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Fetch the upload playlist ID and get the latest video
+            fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads;
+                    console.log(`Upload playlist ID: ${uploadPlaylistId}`);
+                    getLatestVideo(uploadPlaylistId);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Function to get the latest video from the playlist
+        function getLatestVideo(playlistId) {
+            const apiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
+
+            fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=${playlistId}&key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    const latestVideo = data.items[0].snippet;
+                    const videoTitle = latestVideo.title;
+                    const videoUrl = `https://www.youtube.com/watch?v=${latestVideo.resourceId.videoId}`;
+                    const videoThumbnail = latestVideo.thumbnails.high.url;
+
+                    console.log("Latest Video Title:", videoTitle);
+                    console.log("Latest Video URL:", videoUrl);
+                    console.log("Video Thumbnail:", videoThumbnail);
+
+                    // Display the latest video details
+                    displayLatestVideo(videoTitle, videoUrl, videoThumbnail);
+                })
+                .catch(error => console.error('Error fetching latest video:', error));
+        }
+
+        // Function to display the latest video
+        function displayLatestVideo(title, url, thumbnail) {
+            const videoContainer = document.getElementById("latest-video");
+            if (videoContainer) {
+                videoContainer.innerHTML = 
+                `<div class="LatestVideo">
+                    <div class="LatestVideoText">
+                    <h3 class="fix-stroke">Latest Video</h3>
+                    </div>
+                    <div class="LatestVideoSource"
+                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" alt="${title}" width="200"><p>${title}</p></a></div>
+                </div>`;
+            } else {
+                console.error('videoContainer is null, element with id="latest-video" not found.');
+            }
+        }
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center; 
+            align-items: center;     
+            flex-direction: column;
+            background-image: url("images/bg-web.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            image-rendering: pixelated;
+        }
+        .LatestVideo {
+            margin-top: -500px;
+        }
+        .LatestVideoText {
+            font-family: 'PusabFont', sans-serif;
+            color: white;
+            font-size: 50px;
+            -webkit-text-stroke-width: 10px;
+            -webkit-text-stroke-color: black;
+        }
+        .LatestVideoSource {
+            margin-top: 20px;
+            width: 150%;
+            height: 150%;
+            font-family: 'PusabFont', sans-serif;
+            color: white;
+            font-size: 50px;
+            -webkit-text-stroke-width: 10px;
+            -webkit-text-stroke-color: black;
+        }
+
+        .CentreText {
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+        }
+
+        .Heading h1 {
+            -webkit-text-stroke-width: 2.2px;
+            -webkit-text-stroke-color: black;
+            display: flex;
+            font-family: "PusabFont", sans-serif;
+            font-size: 70px;
+            text-align: center;
+            border: solid black 5px;
+            background-image: url(images/hdr-wb.png);
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            background-size: cover;
+            background-position: center;
+            color: rgb(255, 0, 230);
+            margin: 0;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chrome .Heading h1 {
+            height: 150%;
+            -webkit-text-stroke-width: 1px;
+        }
+
+        .safari .Heading h1 {
+            height: 150%;
+        }
+
+        @font-face {
+            font-family: 'PusabFont';
+            src: url(images/pusab_font)
+        }
+
+        .BottomText {
+            width: 100%;
+            background-image: url("images/banner.jpg");
+            border-width: 5px;
+            border-radius: 5px;
+            border-color: black;
+            border-style: solid;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .SubCount p {
+            -webkit-text-stroke-width: 15px;
+            -webkit-text-stroke-color: black;
+            font-family: "PusabFont", sans-serif;
+            font-size: 50px;
+            background: none;
+            color: white;
+            text-align: left;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            margin-left: 200px; 
+            margin-bottom: 35px;
+        }
+
+        .firefox .SubCount p {
+            margin-bottom: 25px; 
+        }
+
+        .ViewCount {
+            -webkit-text-stroke-width: 15px;
+            -webkit-text-stroke-color: black;
+            font-family: "PusabFont", sans-serif;
+            font-size: 50px;
+            background: none;
+            color: white;
+            text-align: left;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            margin-right: 150px;
+            margin-bottom: 35px;
+        }
+
+        .firefox .ViewCount p {
+            margin-bottom: -10px; 
+        }
+
+        .fix-stroke {
+            paint-order: stroke fill;
+        }
+
+        .Image {
+            border-left: 3px solid black;
+            border-right: 3px solid black;
+            border-bottom: 3px solid black;
+            border-radius: 2px;
+            padding: 0; 
+            margin: 0; 
+        }
+
+        .PageButtons {
+            font-family: 'PusabFont', sans-serif;
+            font-size: 30px;
+            -webkit-text-stroke-width: 10px;
+            -webkit-text-stroke-color: black;
+            text-align: center;
+            margin-top: -205px;
+        }
+
+        .firefox .PageButtons {
+            margin-top: -225px;
+        }
+
+        .DemonListButton a {
+            color: white;
+        }
+
+        .DemonListButton a:hover {
+            color: pink;
+        }
+
+        .Image img {
+            display: block; 
+            width: 100px;
+            height: 100px; 
+        }
+
+        .Image img:hover {
+            filter: brightness(1) hue-rotate(-15deg);
+        }
+
+        .Text {
+            -webkit-text-stroke-width: 4px;
+            font-size: 40px;
+            margin-top: 60px;
+            -webkit-text-stroke-color: black;
+            color: rgb(255, 123, 220) !important; 
+            font-family: "PusabFont", sans-serif;
+        }
+
+        .firefox .Text {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="CentreText">
+        <div class="Heading">
+            <h1>CrabicleGD Website!</h1><br />
+        </div>
+        <div class="Text">
+            <h5 class="fix-stroke">The CrabicleGD website includes the <a style="color:pink;text-decoration:none;" href="dlist.html">Crabicle Demonlist,</a> and subscriber <br />and view counts</h5>
+        </div>
+        <div class="PageButtons">
+            <div class="DemonListButton">
+                <a href="dlist.html" style="text-decoration:none;" class="fix-stroke">Crabicle Demonlist</a>
+            </div>
+        </div>
+    </div>
+    <div class="BottomText">
+        <div class="SubCount">
+            <p class="fix-stroke" id="subscriber-count">Loading...</p>
+        </div>
+        <div class="ViewCount">
+            <p class="fix-stroke" id="view-count">Loading...</p>
+        </div>
+        <a href="https://www.youtube.com/@Crabicle?sub_confirmation=1" target="_blank">
+            <div class="Image">
+                <img src="images/profile.jpg" alt="Crabicle Profile Picture">
+            </div>
+        </a><br />
+    </div>
+    <div id="latest-video"></div> <!-- Placeholder for latest video -->
+</body>
+</html>
