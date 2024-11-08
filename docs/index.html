@@ -83,10 +83,10 @@
                 videoContainer.innerHTML = 
                 `<div class="LatestVideo">
                     <div class="LatestVideoText">
-                    <h3 class="fix-stroke">Latest Video</h3>
+                    <h3 class="fix-stroke">Latest Video:</h3>
                     </div>
                     <div class="LatestVideoSource">
-                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" width="200"></a></div>
+                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" width="500"></a></div>
                 </div>`;
             } else {
                 console.error('videoContainer is null, element with id="latest-video" not found.');
@@ -114,23 +114,21 @@
             background-position: center;
             image-rendering: pixelated;
         }
-        .LatestVideo {
-            margin-top: -500px;
-            background-color: pink;
+        .LatestVideoSource img {
+            height: auto; 
+            vertical-align: center;
+            margin-bottom: 200px;
+            border: 10px solid palevioletred; 
+            border-radius: 10px; 
         }
-        .LatestVideoText {
+
+        .LatestVideoText h3 {
             font-family: 'PusabFont', sans-serif;
-            color: white;
+            color: pink;
             font-size: 50px;
-            -webkit-text-stroke-width: 10px;
-            -webkit-text-stroke-color: black;
-        }
-        .LatestVideoSource {
-            margin-top: 20px;
-            width: 150%;
-            height: 150%;
+            vertical-align: center;
             justify-content: center;
-            font-size: 50px;
+            margin-top: -70px;
             -webkit-text-stroke-width: 10px;
             -webkit-text-stroke-color: black;
         }
@@ -248,11 +246,13 @@
             -webkit-text-stroke-width: 10px;
             -webkit-text-stroke-color: black;
             text-align: center;
-            margin-top: -205px;
+            top: 0;
+            margin-top: -270px;
         }
 
         .firefox .PageButtons {
-            margin-top: -225px;
+            top: 0;
+            margin-top: -230px;
         }
 
         .DemonListButton a {
@@ -315,6 +315,6 @@
             </div>
         </a><br />
     </div>
-    <div id="latest-video"></div> <!-- Placeholder for latest video -->
+    <div id="latest-video"></div> <!-- Placeholder for latest video --> Video failed to load...
 </body>
 </html>
