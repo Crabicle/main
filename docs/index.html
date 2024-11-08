@@ -63,22 +63,21 @@
                 .then(response => response.json())
                 .then(data => {
                     const latestVideo = data.items[0].snippet;
-                    const videoTitle = latestVideo.title;
                     const videoUrl = `https://www.youtube.com/watch?v=${latestVideo.resourceId.videoId}`;
                     const videoThumbnail = latestVideo.thumbnails.high.url;
 
-                    console.log("Latest Video Title:", videoTitle);
+
                     console.log("Latest Video URL:", videoUrl);
                     console.log("Video Thumbnail:", videoThumbnail);
 
                     // Display the latest video details
-                    displayLatestVideo(videoTitle, videoUrl, videoThumbnail);
+                    displayLatestVideo(videoUrl, videoThumbnail);
                 })
                 .catch(error => console.error('Error fetching latest video:', error));
         }
 
         // Function to display the latest video
-        function displayLatestVideo(title, url, thumbnail) {
+        function displayLatestVideo(url, thumbnail) {
             const videoContainer = document.getElementById("latest-video");
             if (videoContainer) {
                 videoContainer.innerHTML = 
@@ -87,7 +86,7 @@
                     <h3 class="fix-stroke">Latest Video</h3>
                     </div>
                     <div class="LatestVideoSource">
-                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" alt="${title}" width="200"><p>${title}</p></a></div>
+                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" width="200"></a></div>
                 </div>`;
             } else {
                 console.error('videoContainer is null, element with id="latest-video" not found.');
