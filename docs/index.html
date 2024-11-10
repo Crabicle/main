@@ -4,103 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        console.log("Script is running");
+            console.log("Script is running");
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const body = document.body;
-            const userAgent = navigator.userAgent;
-            console.log(userAgent);
+            document.addEventListener("DOMContentLoaded", function() {
+                const body = document.body;
+                const userAgent = navigator.userAgent;
+                console.log(userAgent);
+                // Browser detection
+                if (userAgent.includes("Chrome")) {
+                    body.classList.add("chrome");
+                    console.log("The browser is chrome");
+                } else if (userAgent.includes("Safari") && !(userAgent.includes("Chrome"))) {
+                    body.classList.add("safari");
+                    console.log("The browser is safari");
+                } else if (userAgent.includes("Firefox")) {
+                    body.classList.add("firefox");
+                    console.log("The browser is firefox");
+                } else {
+                    body.classList.add("unsupported");
+                    console.log("The browser is unsupported");
+                }
+                // Api key and channelId
+                const channelId = "UCO-lDv9aoUcb_bGv8ctoXYQ";
+                const YoutubeApiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
 
-            if (userAgent.includes("Chrome")) {
-                body.classList.add("chrome");
-                console.log("The browser is chrome");
-            } else if (userAgent.includes("Safari") && !(userAgent.includes("Chrome"))) {
-                body.classList.add("safari");
-                console.log("The browser is safari");
-            } else if (userAgent.includes("Firefox")) {
-                body.classList.add("firefox");
-                console.log("The browser is firefox");
-            } else {
-                body.classList.add("unsupported");
-                console.log("The browser is unsupported");
+                // Fetch channel statistics (subscriber count, view count)
+                fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${YoutubeApiKey}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const subscriberCount = data.items[0].statistics.subscriberCount;
+                        const viewCount = data.items[0].statistics.viewCount;
+                        document.getElementById('subscriber-count').innerText = (subscriberCount / 1000).toFixed(2) + "k Subs";
+                        document.getElementById('view-count').innerText = viewCount + " views";
+                    })
+                    .catch(error => console.error('Error:', error));
+
+                // Fetch the upload playlist ID and get the latest video
+                fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${YoutubeApiKey}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads;
+                        console.log(`Upload playlist ID: ${uploadPlaylistId}`);
+                        getLatestVideo(uploadPlaylistId);
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+            // Function to get the latest video from the playlist
+            function getLatestVideo(playlistId) {
+                const YoutubeApiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
+
+                fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=${playlistId}&key=${YoutubeApiKey}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const latestVideo = data.items[0].snippet;
+                        const videoUrl = `https://www.youtube.com/watch?v=${latestVideo.resourceId.videoId}`;
+                        const videoThumbnail = latestVideo.thumbnails.high.url;
+
+
+                        console.log("Latest Video URL:", videoUrl);
+                        console.log("Video Thumbnail:", videoThumbnail);
+
+                        // Display the latest video details
+                        displayLatestVideo(videoUrl, videoThumbnail);
+                    })
+                    .catch(error => console.error('Error fetching latest video:', error));
             }
 
-            const channelId = "UCO-lDv9aoUcb_bGv8ctoXYQ";
-            const apiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
+            // Function to display the latest video
+            function displayLatestVideo(url, thumbnail) {
+                const videoContainer = document.getElementById("latest-video");
 
-            // Fetch channel statistics (subscriber count, view count)
-            fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                if (videoContainer) {
+                    videoContainer.innerHTML = // innerHTML to display the latest video
+
+                    `<div class="LatestVideo">
+                        <div class="LatestVideoSource">
+                        <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" id="videoThumbnail"></a></div>
+                    </div>`;
+
+                    // Now the videoThumbnail is defined, we can safely update its size
+                    const videoThumbnailElement = document.getElementById('videoThumbnail');
+                    if (videoThumbnailElement) {
+                        updateVideoContainerSize(videoThumbnailElement);  // Pass element for resizing
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    const subscriberCount = data.items[0].statistics.subscriberCount;
-                    const viewCount = data.items[0].statistics.viewCount;
-                    document.getElementById('subscriber-count').innerText = (subscriberCount / 1000).toFixed(2) + "k Subs";
-                    document.getElementById('view-count').innerText = viewCount + " views";
-                })
-                .catch(error => console.error('Error:', error));
-
-            // Fetch the upload playlist ID and get the latest video
-            fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`)
-                .then(response => response.json())
-                .then(data => {
-                    const uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads;
-                    console.log(`Upload playlist ID: ${uploadPlaylistId}`);
-                    getLatestVideo(uploadPlaylistId);
-                })
-                .catch(error => console.error('Error:', error));
-        });
-
-        // Function to get the latest video from the playlist
-        function getLatestVideo(playlistId) {
-            const apiKey = "AIzaSyBgkAMkTVWk1dMMBCv4abT2C_zb1Fc_ujA";
-
-            fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=${playlistId}&key=${apiKey}`)
-                .then(response => response.json())
-                .then(data => {
-                    const latestVideo = data.items[0].snippet;
-                    const videoUrl = `https://www.youtube.com/watch?v=${latestVideo.resourceId.videoId}`;
-                    const videoThumbnail = latestVideo.thumbnails.high.url;
-
-
-                    console.log("Latest Video URL:", videoUrl);
-                    console.log("Video Thumbnail:", videoThumbnail);
-
-                    // Display the latest video details
-                    displayLatestVideo(videoUrl, videoThumbnail);
-                })
-                .catch(error => console.error('Error fetching latest video:', error));
-        }
-
-        // Function to display the latest video
-        function displayLatestVideo(url, thumbnail) {
-            const videoContainer = document.getElementById("latest-video");
-            if (videoContainer) {
-                videoContainer.innerHTML = 
-                `<div class="LatestVideo">
-                    <div class="LatestVideoText">
-                    <h3 class="fix-stroke">Latest Video:</h3>
-                    </div>
-                    <div class="LatestVideoSource">
-                    <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" width="500"></a></div>
-                </div>`;
-            } else {
-                console.error('videoContainer is null, element with id="latest-video" not found.');
+                } else {
+                    console.error('videoContainer is null, element with id="latest-video" not found.');
+                }
             }
-        }
+            function getYPosition(element) {
+            const rect = element.getBoundingClientRect();
+                return rect.top + window.pageYOffset;
+            }
+            function updateVideoContainerSize(videoThumbnail) {
+                const mainTxtY = Math.abs(getYPosition(document.getElementById('main-txt')));
+                const bottomTxtY = Math.abs(getYPosition(document.getElementById('bottom-text')));
+                console.log(bottomTxtY + " " + mainTxtY)
+                const calculatedHeight = window.innerHeight - (mainTxtY - bottomTxtY);
+                console.log(bottomTxtY - mainTxtY);
+                console.log(videoThumbnail.style.height);
+                videoThumbnail.style.height = calculatedHeight / 4 + 'px';
+            }
+            // Update
+            document.addEventListener("DOMContentLoaded", function() {
+                function update() {
+                    document.getElementById("main-txt").style.fontSize = window.innerHeight / 23.6 + 'px';
 
+                    requestAnimationFrame(update);
+                    document.addEventListener("fullscreenchange", function() {
+                        
+                });
+                }
+            requestAnimationFrame(update);
+            });
+            // Call the update function on each frame for continuous resizing
+            window.addEventListener("resize", function() {
+                const videoThumbnail = document.getElementById('videoThumbnail');
+                if (videoThumbnail) {
+                    updateVideoContainerSize(videoThumbnail);
+                }
+            });
+
+            
+        // MOBILE
+
+        function isMobileDevice() {
+            return /Mobi|Android|iPhone|iPod|iPod/i.test(navigator.userAgent);
+        }
+            if (isMobileDevice()) {
+                console.log("mobile");
+                document.documentElement.style.setProperty('--counter-font-size', '10px');
+                document.documentElement.style.setProperty('--video-source-width', '170px');
+                document.documentElement.style.setProperty('--video-source-height', '96px');
+                document.documentElement.style.setProperty('--heading-font-size', "30px")
+
+            } else {
+                console.log("not mobile");
+                document.documentElement.style.setProperty('--counter-font-size', '50px');
+                document.documentElement.style.setProperty('--video-source-width', '622px')
+                document.documentElement.style.setProperty('--video-source-height', '350px')
+                document.documentElement.style.setProperty('--heading-font-size', "70px")
+            }
+            // document.documentElement.style.setProperty('--counter-font-size', '30px');
+            // document.documentElement.style.setProperty('--video-source-width', '170px')
+            // document.documentElement.style.setProperty('--video-source-height', '96px')
     </script>
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        /* background and main html setup */
         html, body {
             height: 100%;
             margin: 0;
@@ -114,32 +175,29 @@
             background-position: center;
             image-rendering: pixelated;
         }
-        .LatestVideoSource img {
+        /* Latest video image */
+        .LatestVideoSource img  {
+            image-rendering: optimizeQuality;
+            object-fit: cover;
             height: auto; 
             vertical-align: center;
-            margin-bottom: 120px;
             border: 10px solid palevioletred; 
-            border-radius: 10px; 
+            border-radius: 10px;
+            margin-bottom: 140px;
+            overflow: hidden;
         }
-
-        .LatestVideoText h3 {
-            font-family: 'PusabFont', sans-serif;
-            color: pink;
-            font-size: 50px;
-            vertical-align: center;
-            justify-content: center;
-            margin-top: 10px;
-            -webkit-text-stroke-width: 10px;
-            -webkit-text-stroke-color: black;
+        /* Executes when using firefox */
+        .firefox .LatestVideoSource img {
+            margin-bottom: 140px;
         }
-
+        /* Parent division for media located in the center of the screen */
         .CentreText {
             height: 100%; 
             display: flex;
             flex-direction: column;
             margin-top: 40px;
         }
-
+        /* Heading */
         .Heading h1 {
             -webkit-text-stroke-width: 2.2px;
             -webkit-text-stroke-color: black;
@@ -159,21 +217,21 @@
             justify-content: center;
             align-items: center;
         }
-
+        /* Runs when using chrome */
         .chrome .Heading h1 {
             height: 150%;
             -webkit-text-stroke-width: 1px;
         }
-
+        /* Runs when using safari */
         .safari .Heading h1 {
             height: 150%;
         }
-
+        /* Pusab custom font creation */
         @font-face {
             font-family: 'PusabFont';
             src: url(images/pusab_font)
         }
-
+        /* Footer with sub count etc. */
         .BottomText {
             width: 100%;
             background-image: url("images/banner.jpg");
@@ -188,49 +246,47 @@
             position: fixed;
             bottom: 0;
         }
-
+        /* Subscriber count, displayed as a child of BottomText */
         .SubCount p {
             -webkit-text-stroke-width: 15px;
             -webkit-text-stroke-color: black;
             font-family: "PusabFont", sans-serif;
-            font-size: 50px;
+            font-size: var(--counter-font-size);
             background: none;
             color: white;
             text-align: left;
             position: fixed;
             left: 0;
             bottom: 0;
-            margin-left: 200px; 
-            margin-bottom: 35px;
+            margin-left: 10%; 
+            margin-bottom: 30px;
         }
-
         .firefox .SubCount p {
-            margin-bottom: 25px; 
+            margin-bottom: 25px;
         }
-
+        /* Views count, displayed as a child of BottomText */
         .ViewCount {
             -webkit-text-stroke-width: 15px;
             -webkit-text-stroke-color: black;
             font-family: "PusabFont", sans-serif;
-            font-size: 50px;
+            font-size: var(--counter-font-size);
             background: none;
             color: white;
             text-align: left;
             position: fixed;
             right: 0;
             bottom: 0;
-            margin-right: 150px;
-            margin-bottom: 35px;
+            margin-right: 10%;
+            margin-bottom: 30px;
         }
-
         .firefox .ViewCount p {
-            margin-bottom: -10px; 
+            margin-bottom: -5px;
         }
-
+        /* Makes the stroke appear outside of the text */
         .fix-stroke {
             paint-order: stroke fill;
         }
-
+        /* Icon image */
         .Image {
             border-left: 3px solid black;
             border-right: 3px solid black;
@@ -239,7 +295,7 @@
             padding: 0; 
             margin: 0; 
         }
-
+        /* Pages buttons (appears above the heading) */
         .PageButtons {
             font-family: 'PusabFont', sans-serif;
             font-size: 30px;
@@ -247,45 +303,42 @@
             -webkit-text-stroke-color: black;
             text-align: center;
             top: 0;
-            margin-top: -270px;
-        }
-
-        .firefox .PageButtons {
-            top: 0;
             margin-top: -230px;
         }
-
+        /* Runs when using firefox */
+        .firefox .PageButtons {
+            top: 0;
+            margin-top: -260px;
+        }
+        /* Child of PageButtons, takes you to dlist.html */
         .DemonListButton a {
             color: white;
+            text-decoration: solid underline white 5px;
         }
-
+        /* When hovering over demonslist button */
         .DemonListButton a:hover {
             color: pink;
         }
-
         .Image img {
             display: block; 
             width: 100px;
             height: 100px; 
         }
-
         .Image img:hover {
             filter: brightness(1) hue-rotate(-15deg);
         }
-
         .Text {
             -webkit-text-stroke-width: 4px;
-            font-size: 40px;
             margin-top: 60px;
             -webkit-text-stroke-color: black;
             color: rgb(255, 123, 220) !important; 
             font-family: "PusabFont", sans-serif;
+            line-height: 1;
         }
 
         .firefox .Text {
             margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -294,7 +347,7 @@
             <h1>CrabicleGD Website!</h1><br />
         </div>
         <div class="Text">
-            <h5 class="fix-stroke">The CrabicleGD website includes the <a style="color:pink;text-decoration:none;" href="dlist.html">Crabicle Demonlist,</a> and subscriber <br />and view counts</h5>
+            <h5 id="main-txt" class="fix-stroke">The CrabicleGD website includes the <a style="color:pink;text-decoration:none;" href="dlist.html">Crabicle Demonlist,</a> and subscriber<br />and view counts. Click the icon to subscribe below, and watch<br />my latest video below!</h5>
         </div>
         <div class="PageButtons">
             <div class="DemonListButton">
@@ -302,7 +355,7 @@
             </div>
         </div>
     </div>
-    <div class="BottomText">
+    <div class="BottomText" id="bottom-text">
         <div class="SubCount">
             <p class="fix-stroke" id="subscriber-count">Loading...</p>
         </div>
@@ -315,6 +368,6 @@
             </div>
         </a><br />
     </div>
-    <div id="latest-video"></div> <!-- Placeholder for latest video --> Video failed to load...
+    <div id="latest-video"></div> <!-- Placeholder for latest video -->
 </body>
 </html>
