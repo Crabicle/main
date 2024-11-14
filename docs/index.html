@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="general.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
@@ -78,43 +79,38 @@
 
             // Function to display the latest video
             function displayLatestVideo(url, thumbnail) {
-                const videoContainer = document.getElementById("latest-video");
-
-                if (videoContainer) {
-                    videoContainer.innerHTML = // innerHTML to display the latest video
-
-                    `<div class="LatestVideo">
-                        <div class="LatestVideoSource">
-                        <a  class="fix-stroke" href="${url}" target="_blank"><img src="${thumbnail}" id="videoThumbnail"></a></div>
-                    </div>`;
-
-                    // Now the videoThumbnail is defined, we can safely update its size
-                    const videoThumbnailElement = document.getElementById('videoThumbnail');
-                    if (videoThumbnailElement) {
-                        updateVideoContainerSize(videoThumbnailElement);  // Pass element for resizing
-                    }
-                } else {
-                    console.error('videoContainer is null, element with id="latest-video" not found.');
-                }
+                const latestVideoContainer = document.getElementById('latest-video');
+                latestVideoContainer.innerHTML = `
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        class="LatestVideoSource"
+                        src="${url.replace("watch?v=", "embed/")}" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                `;
             }
+
             function getYPosition(element) {
             const rect = element.getBoundingClientRect();
                 return rect.top + window.pageYOffset;
             }
-            function updateVideoContainerSize(videoThumbnail) {
+            function updateVideoContainerSize(image) {
                 const mainTxtY = Math.abs(getYPosition(document.getElementById('main-txt')));
                 const bottomTxtY = Math.abs(getYPosition(document.getElementById('bottom-text')));
                 console.log(bottomTxtY + " " + mainTxtY)
                 const calculatedHeight = window.innerHeight - (mainTxtY - bottomTxtY);
                 console.log(bottomTxtY - mainTxtY);
-                console.log(videoThumbnail.style.height);
-                videoThumbnail.style.height = calculatedHeight / 4 + 'px';
+                console.log(image.style.height);
+                image.style.height = calculatedHeight / 4 + 'px';
             }
             // Update
             document.addEventListener("DOMContentLoaded", function() {
                 function update() {
                     document.getElementById("main-txt").style.fontSize = window.innerHeight / 23.6 + 'px';
-
                     requestAnimationFrame(update);
                     document.addEventListener("fullscreenchange", function() {
                         
@@ -125,8 +121,10 @@
             // Call the update function on each frame for continuous resizing
             window.addEventListener("resize", function() {
                 const videoThumbnail = document.getElementById('videoThumbnail');
+                const discordInvite = document.getElementById('discord-invite');
                 if (videoThumbnail) {
-                    updateVideoContainerSize(videoThumbnail);
+                    updateVideoContainerSize(latestVideoContainer);
+                    updateVideoContainerSize(discordInvite);
                 }
             });
 
@@ -165,6 +163,7 @@
         html, body {
             height: 100%;
             margin: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center; 
             align-items: center;     
@@ -175,28 +174,32 @@
             background-position: center;
             image-rendering: pixelated;
         }
-        /* Latest video image */
-        .LatestVideoSource img  {
-            image-rendering: optimizeQuality;
-            object-fit: cover;
-            height: auto; 
-            vertical-align: center;
-            border: 10px solid palevioletred; 
-            border-radius: 10px;
-            margin-bottom: 140px;
-            overflow: hidden;
-        }
-        /* Executes when using firefox */
-        .firefox .LatestVideoSource img {
-            margin-bottom: 140px;
-        }
         /* Parent division for media located in the center of the screen */
+        body {
+            padding-bottom: 60px;
+        }
         .CentreText {
             height: 100%; 
             display: flex;
             flex-direction: column;
-            margin-top: 40px;
         }
+        .MediaWrapper {
+            border: solid rgba(0, 0, 0, 50%) 10px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 30%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -35%;
+            width: 100%;
+        }
+
+        #latest-video {
+            margin-left: 200px;
+            text-align: center;
+        }
+
+
         /* Heading */
         .Heading h1 {
             -webkit-text-stroke-width: 2.2px;
@@ -207,19 +210,21 @@
             text-align: center;
             border: solid black 5px;
             background-image: url(images/hdr-wb.png);
+            padding-top: 20px;
+            padding-bottom: 20px;
             background-repeat: no-repeat;
             image-rendering: pixelated;
             background-size: cover;
             background-position: center;
             color: rgb(255, 0, 230);
-            margin: 0;
-            height: 100%;
+            margin-top: -2.5%;
             justify-content: center;
             align-items: center;
         }
         /* Runs when using chrome */
         .chrome .Heading h1 {
-            height: 150%;
+            margin-top: -2%;
+            height: 120%;
             -webkit-text-stroke-width: 1px;
         }
         /* Runs when using safari */
@@ -282,10 +287,6 @@
         .firefox .ViewCount p {
             margin-bottom: -5px;
         }
-        /* Makes the stroke appear outside of the text */
-        .fix-stroke {
-            paint-order: stroke fill;
-        }
         /* Icon image */
         .Image {
             border-left: 3px solid black;
@@ -295,41 +296,18 @@
             padding: 0; 
             margin: 0; 
         }
-        /* Pages buttons (appears above the heading) */
-        .PageButtons {
-            font-family: 'PusabFont', sans-serif;
-            font-size: 30px;
-            -webkit-text-stroke-width: 10px;
-            -webkit-text-stroke-color: black;
-            text-align: center;
-            top: 0;
-            margin-top: -230px;
-        }
-        /* Runs when using firefox */
-        .firefox .PageButtons {
-            top: 0;
-            margin-top: -260px;
-        }
-        /* Child of PageButtons, takes you to dlist.html */
-        .DemonListButton a {
-            color: white;
-            text-decoration: solid underline white 5px;
-        }
-        /* When hovering over demonslist button */
-        .DemonListButton a:hover {
-            color: pink;
-        }
         .Image img {
             display: block; 
             width: 100px;
             height: 100px; 
         }
         .Image img:hover {
-            filter: brightness(1) hue-rotate(-15deg);
+            opacity: 0.5;
         }
+
         .Text {
             -webkit-text-stroke-width: 4px;
-            margin-top: 60px;
+            margin-top: 30px;
             -webkit-text-stroke-color: black;
             color: rgb(255, 123, 220) !important; 
             font-family: "PusabFont", sans-serif;
@@ -339,19 +317,51 @@
         .firefox .Text {
             margin-top: 20px;
         }
+        .demonListEmbedLink {
+            -webkit-text-stroke: 4px black;
+        }
+
+        .discordServerEmbedLink {
+            -webkit-text-stroke: 4px black;
+        }
+        .demonListEmbedLink:hover {
+            opacity: 0.5;
+        }
+        .discordServerEmbedLink:hover {
+            opacity: 0.5;
+        }
+        #discord-invite {
+            display: inline-block;
+            max-width: 400px;
+            width: 30%;
+        }
+        .DiscordInvite {
+            max-width: 400px;
+            width: 80%;
+        }
+        .DiscordInvite img {
+            border: 3px solid black;
+            border-radius: 10px;
+        }
+        .DiscordInvite:hover {
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
     <div class="CentreText">
-        <div class="Heading">
+        <div class="Heading" id="head">
             <h1>CrabicleGD Website!</h1><br />
         </div>
         <div class="Text">
-            <h5 id="main-txt" class="fix-stroke">The CrabicleGD website includes the <a style="color:pink;text-decoration:none;" href="dlist.html">Crabicle Demonlist,</a> and subscriber<br />and view counts. Click the icon to subscribe below, and watch<br />my latest video below!</h5>
+            <h5 id="main-txt" class="fix-stroke">The CrabicleGD website includes the <a style="color:pink;text-decoration:none;" class="demonListEmbedLink" href="dlist.html">Crabicle Demonlist,</a> and subscriber<br />and view counts. Click the icon to subscribe, watch<br />my latest video below, and join my<a style="color:pink;text-decoration:none;" class="discordServerEmbedLink" href="https://discord.gg/DgM9RbSk"> discord server </a>below!</h5>
         </div>
-        <div class="PageButtons">
+        <div class="PageButtons" id="list-button">
             <div class="DemonListButton">
                 <a href="dlist.html" style="text-decoration:none;" class="fix-stroke">Crabicle Demonlist</a>
+            </div>
+            <div class="HomeButton">
+                <a href="index.html" style="text-decoration:none;"class="fix-stroke">Home</a>
             </div>
         </div>
     </div>
@@ -368,6 +378,10 @@
             </div>
         </a><br />
     </div>
-    <div id="latest-video"></div> <!-- Placeholder for latest video -->
+    <div class="MediaWrapper">
+        <a id="discord-invite" href="https://discord.gg/DgM9RbSk" target="_blank"><img src="images/discord-logo.png"alt="Join my discord server!" class="DiscordInvite"></a>
+        <div id="latest-video"></div>
+    </div>
 </body>
 </html>
+
