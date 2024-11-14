@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="general.css">
+    <style>
+        html, body {
+            height: 200vh;
+            width: 100%;
+            margin: 0;  
+            flex-direction: column;
+            background-image: url("images/dlistbg.png");
+            image-rendering: pixelated;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center top;
+        }
+        @font-face {
+            font-family: 'PusabFont';
+            align-items: top;
+            src: url("images/pusab_font");
+        }
+        .dlistHeader {
+            display: flex;
+            font-family: 'PusabFont', sans-serif;
+            top: 0;
+            height: 10%;
+            font-size: 40px;
+            left: 0;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            right: 0;
+            justify-content: center;
+            -webkit-text-stroke-width: 10px;
+            -webkit-text-stroke-color: black;
+        }
+        #dlist1 {
+            display: flex;
+        }
+        /* Pages buttons (appears above the heading) */
+        .PageButtons {
+            display: flex;
+            font-family: 'PusabFont', sans-serif;
+            top: 0;
+            margin-top: 0px;
+            align-items: center;
+            font-size: 25px;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 7px;
+            right: 0;
+            justify-content: center;
+        }
+        .PageButtons:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        /* Child of PageButtons, takes you to dlist.html */
+        .DemonListButton a {
+            color: white;
+            text-decoration: solid underline white 5px;
+            text-decoration: solid underline white 5px;
+            padding: 10px;
+        }
+        /* When hovering over demonslist button */
+        .DemonListButton a:hover {
+            color: pink;
+        } 
+        .lvls {
+            display: flex;
+            flex-direction: column;
+            margin-top: 3%;
+            color: white;
+            font-family: 'PusabFont', sans-serif;
+            font-size: 45px;
+            margin-left: 5%;
+        }
+
+        .videoIFrames {
+            margin-top: 10px; 
+            margin-left: 0; 
+            border: solid black 10px;
+            border-radius: 10px;
+        }
+        .listsContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            margin: 20px; 
+        }
+
+    </style>
+    <div class="dlistHeader">
+        <h1 class="fix-stroke"style="
+            -webkit-text-stroke-color:black;
+            -webkit-text-stroke-width:20px;">Crabicle Demonlist!</h1>
+    </div>
+    <div class="lvls">
+        <div class="listsContainer">
+            <div class="dList">
+                <div id="dlist1" class="fix-stroke" style="
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black;
+                line-height: 1.5;">
+                Classic Levels: <br/>#1: RUST
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/o00mp9IhfLY" title="RUST Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist2" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #2: Shardscapes
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/K4YEjiyiM_8" title="Shardscapes Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist3" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #3: Artificial Ascent
+            </div>
+            <iframe width="560" class="videoIFrames "height="315" src="https://www.youtube.com/embed/y6_OJHak0K0" title="Artificial Ascent Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist4" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #4: Devoid
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/YagWHVzEe1w" title="Devoid Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist5" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #5: Bloodbath
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/HCo3omRjz0A" title="Bloodbath Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist6" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #6: Myocardia
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/m7mghnFCprQ" title="Myocardia Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist7" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #7: Precipitance
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/Mj6mPsvWJ2U" title="Precipitance Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist8" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #8: Maths
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/mW99lE2lPsY" title="Maths Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist9" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #9: Aftermath
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/Z50AudoArmY" title="Aftermath Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist10" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #10: Hypersonic
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/NiCtYLtutfw;start=153" title="Hypersonic Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist11" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #11: Cataclysm
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/VESxnAzUkt4?start=153&nocache=1" title="Cataclysm Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+            <div id="dlist12" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #12: Dark Odyssey
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/U4nem7PBSUc" title="Dark Odyssey Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
+            <div id="dlist13" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #13: Troll Level
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/VESxnAzUkt4" title="Troll Level Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist14" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #14: Azurite
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/9dwp4EMdbpE" title="Azurite Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist15" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #15: Acu
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/VESxnAzUkt4?start=74&nocache=1" title="Acu Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div id="dlist16" class="fix-stroke" style="
+                margin-top: 5%;
+                -webkit-text-stroke-width: 10px;
+                -webkit-text-stroke-color: black">
+                #16: The Ultimate Demon
+            </div>
+            <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/nNyxPruJMdA?si=AJJDCq9mRQjclu_1" title="The Ultimate Demon Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="pList">
+                <div id="plist1" class="fix-stroke" style="
+                    -webkit-text-stroke-width: 10px;
+                    -webkit-text-stroke-color: black;
+                    line-height: 1.5;
+                    right: 1;">
+                    Platformer Levels: <br/>#1: FURY OF 500
+                </div>
+                <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/HgnrKjIBI64" title="FURY OF 500 Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div id="plist2" class="fix-stroke" style="
+                    -webkit-text-stroke-width: 10px;
+                    margin-top: 5%;
+                    -webkit-text-stroke-color: black;
+                    right: 1;">
+                    #2: The Tower XXII
+                </div>
+                <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/nCFytI3vWaw?si=bwPVoa-rJ5afNxep&amp;start=153" title="The Tower XXII Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div id="plist3" class="fix-stroke" style="
+                    -webkit-text-stroke-width: 10px;
+                    margin-top: 5%;
+                    -webkit-text-stroke-color: black;
+                    right: 1;">
+                    #3: Storm Front
+                </div>
+                <iframe class="videoIFrames" width="560" height="315" src="https://www.youtube.com/embed/okysVgxwhxg" title="Storm Front Completion" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        
+        </div>
+    <div class="PageButtons" id="list-button">
+        <div class="DemonListButton">
+            <a class="fix-stroke" href="dlist.html" style="
+                text-decoration: none;
+                -webkit-text-stroke-color:black;
+                -webkit-text-stroke-width:10px;" class="fix-stroke">Crabicle Demonlist</a>
+        </div>
+        <div class="HomeButton">
+            <a class="fix-stroke" href="index.html" style="
+                text-decoration: none;
+                -webkit-text-stroke-color:black;
+                -webkit-text-stroke-width:10px;" class="fix-stroke">Home</a>
+        </div>
+    </div>
+</head>
+</html>
